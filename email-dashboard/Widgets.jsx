@@ -603,33 +603,6 @@ function TitleSaveSlots({ onNewGame, onLoadGame }) {
 
               {/* Orange status dot removed */}
 
-              {/* Hover popup — empty slot: START button */}
-              {!slot && isHov && (
-                <div style={{
-                  position: "absolute", left: -1, right: -1, bottom: "100%", zIndex: 20,
-                  display: "flex", gap: 4, padding: 4,
-                  background: "rgba(2,6,18,0.92)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
-                  border: "1px solid rgba(200,146,10,0.55)",
-                  borderBottom: "none",
-                  boxShadow: "0 -4px 18px rgba(0,0,0,0.6), 0 0 16px rgba(200,146,10,0.15)",
-                  animation: "headerSlideIn 0.18s ease",
-                }}>
-                  <button onClick={(e) => {
-                    e.stopPropagation();
-                    localStorage.setItem("sg_active_slot", String(i));
-                    localStorage.setItem("sg_chapters", "{}");
-                    localStorage.setItem("sg_stats", JSON.stringify({ emailsSent:0, dmailsSent:0, aiRepliesReceived:0, emailsSentTo:{} }));
-                    onNewGame();
-                  }}
-                    style={{ ...mono, flex: 1, fontSize: 8, letterSpacing: "0.2em", padding: "6px 0", cursor: "pointer",
-                      background: "rgba(200,146,10,0.12)", border: "1px solid rgba(200,146,10,0.55)",
-                      color: "#f0c870", fontWeight: "700", textShadow: "1px 1px 2px rgba(0,0,0,0.85)",
-                      transition: "all 0.12s" }}
-                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(200,146,10,0.28)"; e.currentTarget.style.color = "#ffffff"; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(200,146,10,0.12)"; e.currentTarget.style.color = "#f0c870"; }}
-                  >▶ NEW GAME</button>
-                </div>
-              )}
 
               {/* Hover popup — filled slot: LOAD / DELETE */}
               {slot && isHov && (
