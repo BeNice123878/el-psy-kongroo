@@ -657,175 +657,108 @@ function StoryHub({ open, onClose, stats, completed, onPlay, onResetProgress, on
   const heroEval = heroChapter ? evaluateUnlock(heroChapter.unlock, stats) : { ok: true, progress: 1, of: 1 };
   const heroUnlocked = heroPrevDone && heroEval.ok;
 
+  const mono = "Share Tech Mono,monospace";
+  const serif = '"IM Fell English",serif';
+
   return (
     <div onClick={onClose} style={{
       position: "fixed", inset: 0, zIndex: 700,
-      background: "rgba(2,5,15,0.82)", backdropFilter: "blur(8px)",
+      background: "rgba(2,5,15,0.88)", backdropFilter: "blur(10px)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      animation: "bodyFadeIn 0.3s ease",
+      animation: "bodyFadeIn 0.25s ease",
     }}>
       <div onClick={e => e.stopPropagation()} style={{
-        width: "min(980px, 94vw)", maxHeight: "92vh", overflowY: "auto",
-        background: "linear-gradient(180deg, rgba(8,14,28,0.98) 0%, rgba(4,10,22,0.98) 100%)",
-        border: "1px solid rgba(232,184,92,0.45)",
-        boxShadow: "0 0 80px rgba(200,146,10,0.18), 0 30px 100px rgba(0,0,0,0.6)",
-        animation: "headerSlideIn 0.4s cubic-bezier(0.2,0.8,0.2,1)",
-        borderRadius: 6,
-        position: "relative",
+        width: "min(860px, 92vw)", maxHeight: "90vh", overflowY: "auto",
+        background: "rgba(6,10,22,0.98)",
+        border: "1px solid rgba(232,184,92,0.3)",
+        boxShadow: "0 0 60px rgba(200,146,10,0.12), 0 24px 80px rgba(0,0,0,0.7)",
+        animation: "headerSlideIn 0.35s cubic-bezier(0.2,0.8,0.2,1)",
+        borderRadius: 6, position: "relative",
       }}>
-        {/* Animated divergence number watermark — subtle, top-right */}
-        <div style={{
-          position: "absolute", right: 28, top: 78,
-          fontFamily: "Share Tech Mono,monospace", fontSize: 56, fontWeight: 700,
-          color: "rgba(200,146,10,0.06)", letterSpacing: "0.04em",
-          pointerEvents: "none", zIndex: 0,
-          textShadow: "0 0 30px rgba(200,146,10,0.15)",
-        }}>{doneCount === total ? "1.048596" : `α ${(0.4 + doneCount * 0.1).toFixed(6)}`}</div>
 
         {/* Header */}
         <div style={{
-          padding: "28px 32px 22px",
-          borderBottom: "1px solid rgba(232,184,92,0.22)",
-          background: "linear-gradient(180deg, rgba(200,146,10,0.06) 0%, rgba(200,146,10,0.01) 100%)",
-          position: "relative", zIndex: 1,
+          padding: "24px 28px 20px",
+          borderBottom: "1px solid rgba(232,184,92,0.15)",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#e8b850", boxShadow: "0 0 8px #e8b850", animation: "pulse 2.4s infinite" }}/>
-            <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 10, color: "rgba(232,184,92,0.7)", letterSpacing: "0.32em", fontWeight: 600 }}>
-              OPERATION SKULD · STORY MODE
+          <div>
+            <div style={{ fontFamily: mono, fontSize: 10, color: "rgba(232,184,92,0.5)", letterSpacing: "0.3em", marginBottom: 8 }}>
+              STORY MODE · {doneCount}/{total}
+            </div>
+            <div style={{ fontFamily: serif, fontSize: 32, color: "#f0d890", lineHeight: 1 }}>
+              El Psy <span style={{ color: "#c8920a", fontStyle: "italic" }}>Kongroo</span>
             </div>
           </div>
-          <div style={{ fontFamily: '"IM Fell English",serif', fontSize: 34, color: "#f0d890", lineHeight: 1, letterSpacing: "-0.01em" }}>
-            El Psy <span style={{ color: "#c8920a", fontStyle: "italic" }}>Kongroo</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontFamily: mono, fontSize: 9, color: "rgba(232,184,92,0.4)", letterSpacing: "0.2em" }}>WORLD LINE</div>
+              <div style={{ fontFamily: mono, fontSize: 18, color: "#f0d890", letterSpacing: "0.06em" }}>
+                {doneCount === total ? "1.048596%" : `α ${(0.4 + doneCount * 0.1).toFixed(6)}%`}
+              </div>
+            </div>
+            <button onClick={onClose} style={{
+              background: "transparent", border: "1px solid rgba(232,184,92,0.25)",
+              color: "rgba(220,205,170,0.6)", padding: "7px 16px",
+              fontFamily: mono, fontSize: 10, letterSpacing: "0.2em",
+              cursor: "pointer", borderRadius: 3, transition: "all 0.15s",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background="rgba(200,146,10,0.1)"; e.currentTarget.style.borderColor="rgba(232,184,92,0.5)"; e.currentTarget.style.color="#f0d890"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="rgba(232,184,92,0.25)"; e.currentTarget.style.color="rgba(220,205,170,0.6)"; }}>
+              × CLOSE
+            </button>
           </div>
-          <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 11, color: "rgba(220,205,170,0.55)", letterSpacing: "0.04em", marginTop: 10, maxWidth: 580, lineHeight: 1.5 }}>
-            Operation Skuld. Send mails, receive replies, transmit D-Mails through the Phonewave.
-            Each action shifts the world line — bend the attractor field until you reach <span style={{color:"#f0d890"}}>1.048596%</span>.
-          </div>
-          <button onClick={onClose} style={{
-            position: "absolute", right: 22, top: 22,
-            background: "transparent", border: "1px solid rgba(232,184,92,0.3)",
-            color: "rgba(220,205,170,0.7)", padding: "6px 14px",
-            fontFamily: "Share Tech Mono,monospace", fontSize: 10, letterSpacing: "0.22em",
-            cursor: "pointer", borderRadius: 3,
-            transition: "all 0.15s",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background="rgba(200,146,10,0.1)"; e.currentTarget.style.borderColor="rgba(232,184,92,0.6)"; }}
-          onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.borderColor="rgba(232,184,92,0.3)"; }}>
-            × CLOSE
-          </button>
         </div>
 
-        {/* Stats bar */}
-        <div style={{
-          padding: "16px 32px",
-          display: "flex", gap: 28, alignItems: "center",
-          borderBottom: "1px solid rgba(232,184,92,0.14)",
-          background: "rgba(4,8,18,0.4)",
-        }}>
-          <Stat label="CHAPTERS" v={`${doneCount}/${total}`}/>
-          <Stat label="EMAILS" v={stats.emailsSent}/>
-          <Stat label="REPLIES" v={stats.aiRepliesReceived}/>
-          <Stat label="D-MAILS" v={stats.dmailsSent}/>
-          <Stat label="WORLD LINE" v={doneCount === total ? "1.048596%" : `α ${(0.4 + doneCount * 0.1).toFixed(6)}%`} accent/>
-          <div style={{ flex: 1 }}/>
-          <button onClick={onResetProgress} style={{
-            padding: "5px 14px", background: "transparent",
-            border: "1px solid rgba(180,80,80,0.32)",
-            color: "rgba(220,140,140,0.75)",
-            fontFamily: "Share Tech Mono,monospace", fontSize: 9, letterSpacing: "0.22em",
-            cursor: "pointer", borderRadius: 3,
-            transition: "all 0.15s",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background="rgba(180,80,80,0.1)"; e.currentTarget.style.color="rgba(230,160,160,0.95)"; }}
-          onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.color="rgba(220,140,140,0.75)"; }}>
-            ↺ NEW GAME+
-          </button>
-        </div>
-
-        {/* Hero "Continue Operation" card */}
+        {/* Hero card */}
         {heroChapter && heroUnlocked && (
-          <div style={{
-            margin: "20px 32px 0",
-            position: "relative", overflow: "hidden",
-            border: "1px solid rgba(232,184,92,0.5)",
-            borderRadius: 6,
-            boxShadow: "0 0 32px rgba(200,146,10,0.18), inset 0 0 30px rgba(0,0,0,0.4)",
-            cursor: "pointer",
-            transition: "transform 0.2s, box-shadow 0.2s",
+          <div style={{ margin: "20px 24px 0", position: "relative", overflow: "hidden",
+            border: "1px solid rgba(232,184,92,0.4)", borderRadius: 4, cursor: "pointer",
+            transition: "box-shadow 0.2s",
           }}
           onClick={() => onPlay(heroChapter)}
-          onMouseEnter={e => { e.currentTarget.style.transform="translateY(-2px)"; e.currentTarget.style.boxShadow="0 0 42px rgba(200,146,10,0.32), inset 0 0 30px rgba(0,0,0,0.4)"; }}
-          onMouseLeave={e => { e.currentTarget.style.transform="translateY(0)"; e.currentTarget.style.boxShadow="0 0 32px rgba(200,146,10,0.18), inset 0 0 30px rgba(0,0,0,0.4)"; }}>
-            <div style={{
-              minHeight: 180,
-              backgroundImage: `url(${heroChapter.bg})`,
+          onMouseEnter={e => e.currentTarget.style.boxShadow="0 0 36px rgba(200,146,10,0.28)"}
+          onMouseLeave={e => e.currentTarget.style.boxShadow="none"}>
+            <div style={{ minHeight: 160, backgroundImage: `url(${heroChapter.bg})`,
               backgroundSize: "cover", backgroundPosition: "center",
-              filter: "saturate(0.85) brightness(0.6)",
-              padding: "22px 26px",
-              position: "relative",
+              filter: "saturate(0.8) brightness(0.55)", padding: "20px 24px", position: "relative",
             }}>
-              <div style={{ position: "absolute", inset: 0,
-                background: "linear-gradient(90deg, rgba(4,8,18,0.85) 0%, rgba(4,8,18,0.5) 60%, rgba(4,8,18,0.85) 100%)",
-              }}/>
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(4,8,18,0.9) 0%, rgba(4,8,18,0.4) 100%)" }}/>
               <div style={{ position: "relative", zIndex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
-                  <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 9, color: "#e8b850", letterSpacing: "0.32em", fontWeight: 700 }}>
-                    {doneCount === 0 ? "▶ BEGIN OPERATION" : "▶ CONTINUE OPERATION"}
-                  </div>
-                  <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 9, color: "rgba(232,184,92,0.55)", letterSpacing: "0.2em" }}>
-                    · CH.{String(heroChapter.num).padStart(2,"0")} / {String(total).padStart(2,"0")}
-                  </div>
+                <div style={{ fontFamily: mono, fontSize: 9, color: "#e8b850", letterSpacing: "0.3em", marginBottom: 8 }}>
+                  {doneCount === 0 ? "▶ BEGIN" : "▶ CONTINUE"} · CH.{String(heroChapter.num).padStart(2,"0")}
                 </div>
-                <div style={{ fontFamily: '"IM Fell English",serif', fontSize: 26, color: "#f0d890", lineHeight: 1.1, letterSpacing: "-0.01em", marginBottom: 4, textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>
+                <div style={{ fontFamily: serif, fontSize: 28, color: "#f0d890", lineHeight: 1.1, marginBottom: 14, textShadow: "0 2px 10px rgba(0,0,0,0.7)" }}>
                   {heroChapter.title}
                 </div>
-                <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 10, color: "rgba(220,205,170,0.7)", letterSpacing: "0.1em", marginBottom: 12 }}>
-                  {heroChapter.subtitle} · {heroChapter.setting}
-                </div>
-                <div style={{ fontFamily: '"IM Fell English",serif', fontStyle: "italic", fontSize: 14, color: "rgba(225,215,195,0.88)", lineHeight: 1.55, maxWidth: 660, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>
-                  {heroChapter.summary}
-                </div>
-                <div style={{ marginTop: 16, display: "inline-flex", alignItems: "center", gap: 8,
-                  padding: "8px 18px",
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "7px 18px",
                   background: "linear-gradient(180deg, #e8b850 0%, #c8920a 100%)",
-                  border: "1px solid #f0d890",
-                  borderRadius: 3,
-                  fontFamily: "Share Tech Mono,monospace", fontSize: 11, letterSpacing: "0.22em",
+                  borderRadius: 3, fontFamily: mono, fontSize: 11, letterSpacing: "0.22em",
                   color: "#1a1208", fontWeight: 700,
-                  boxShadow: "0 0 16px rgba(232,184,92,0.5)",
                 }}>
-                  ▶ PLAY CHAPTER
+                  ▶ PLAY
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Operation Complete banner */}
         {doneCount === total && (
-          <div style={{
-            margin: "20px 32px 0", padding: "18px 24px",
-            background: "linear-gradient(90deg, rgba(122,202,168,0.12) 0%, rgba(122,202,168,0.03) 100%)",
-            border: "1px solid rgba(122,202,168,0.5)",
-            borderRadius: 4,
+          <div style={{ margin: "20px 24px 0", padding: "16px 20px",
+            background: "rgba(122,202,168,0.06)", border: "1px solid rgba(122,202,168,0.4)", borderRadius: 4,
           }}>
-            <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 10, color: "#7acaa8", letterSpacing: "0.28em", marginBottom: 4 }}>✓ OPERATION COMPLETE</div>
-            <div style={{ fontFamily: '"IM Fell English",serif', fontSize: 20, color: "#a8e2c4" }}>
-              You reached <span style={{ fontStyle: "italic" }}>Steins;Gate</span>.
+            <div style={{ fontFamily: serif, fontSize: 20, color: "#a8e2c4" }}>
+              ✓ You reached <span style={{ fontStyle: "italic" }}>Steins;Gate</span>.
             </div>
           </div>
         )}
 
         {/* Chapter list */}
-        <div style={{ padding: "20px 32px 24px" }}>
-          <div style={{
-            fontFamily: "Share Tech Mono,monospace", fontSize: 9, letterSpacing: "0.32em",
-            color: "rgba(232,184,92,0.55)", marginBottom: 14,
-          }}>
-            // ALL CHAPTERS
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ padding: "20px 24px 24px" }}>
+          <div style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.28em",
+            color: "rgba(232,184,92,0.4)", marginBottom: 12 }}>CHAPTERS</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {CHAPTERS.map((ch, i) => {
               const prevDone = i === 0 || completed[CHAPTERS[i-1].id];
               const evalRes = evaluateUnlock(ch.unlock, stats);
@@ -834,7 +767,6 @@ function StoryHub({ open, onClose, stats, completed, onPlay, onResetProgress, on
               return (
                 <ChapterCard key={ch.id} chapter={ch} unlocked={unlocked} done={done}
                   progress={evalRes.progress} of={evalRes.of}
-                  gateLabel={ch.unlock.label}
                   blockedReason={!prevDone ? `Complete Chapter ${i} first` : !evalRes.ok ? ch.unlock.label : null}
                   onPlay={() => onPlay(ch)}/>
               );
@@ -842,54 +774,57 @@ function StoryHub({ open, onClose, stats, completed, onPlay, onResetProgress, on
           </div>
         </div>
 
-        {/* ── Settings panel ── */}
+        {/* Settings */}
         {setFontScale && (
-          <div style={{
-            margin: "0 28px 28px", padding: "18px 22px",
-            background: "rgba(200,195,185,0.04)",
-            border: "1px solid rgba(200,195,185,0.12)",
+          <div style={{ margin: "0 24px 24px", padding: "16px 20px",
+            border: "1px solid rgba(200,195,185,0.1)", borderRadius: 4,
           }}>
-            <div style={{ fontFamily:"Share Tech Mono,monospace", fontSize:8, color:"rgba(200,195,185,0.35)", letterSpacing:"0.3em", marginBottom:16 }}>
-              // SETTINGS
+            <div style={{ fontFamily: mono, fontSize: 9, color: "rgba(200,195,185,0.3)", letterSpacing: "0.25em", marginBottom: 14 }}>
+              SETTINGS
             </div>
-            <div style={{ display:"flex", gap:32, flexWrap:"wrap", alignItems:"flex-start" }}>
-
-              {/* Email text size */}
+            <div style={{ display: "flex", gap: 32, flexWrap: "wrap", alignItems: "flex-start" }}>
               {setFontScale && (
                 <div>
-                  <div style={{ fontFamily:"Share Tech Mono,monospace", fontSize:8, color:"rgba(200,195,185,0.4)", letterSpacing:"0.22em", marginBottom:8 }}>
-                    EMAIL TEXT SIZE · {Math.round(fontScale * 100)}%
+                  <div style={{ fontFamily: mono, fontSize: 9, color: "rgba(200,195,185,0.4)", letterSpacing: "0.18em", marginBottom: 8 }}>
+                    TEXT SIZE · {Math.round(fontScale * 100)}%
                   </div>
-                  <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                    <span style={{ fontFamily:"Share Tech Mono,monospace", fontSize:9, color:"rgba(200,195,185,0.35)" }}>A</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontFamily: mono, fontSize: 9, color: "rgba(200,195,185,0.35)" }}>A</span>
                     <input type="range" min="0.78" max="3.0" step="0.05" value={fontScale}
-                      onChange={e => setFontScale(Number(e.target.value))}
-                      className="sg-volume"
-                      style={{ width:120, background:`linear-gradient(to right, rgba(200,195,185,0.6) ${((fontScale-0.78)/2.22)*100}%, rgba(200,195,185,0.12) ${((fontScale-0.78)/2.22)*100}%)` }}
+                      onChange={e => setFontScale(Number(e.target.value))} className="sg-volume"
+                      style={{ width: 120, background: `linear-gradient(to right, rgba(200,195,185,0.6) ${((fontScale-0.78)/2.22)*100}%, rgba(200,195,185,0.12) ${((fontScale-0.78)/2.22)*100}%)` }}
                     />
-                    <span style={{ fontFamily:"Share Tech Mono,monospace", fontSize:11, color:"rgba(200,195,185,0.5)" }}>A</span>
+                    <span style={{ fontFamily: mono, fontSize: 12, color: "rgba(200,195,185,0.5)" }}>A</span>
                   </div>
                 </div>
               )}
-
-              {/* UI Scale */}
               {setUiScale && (
                 <div>
-                  <div style={{ fontFamily:"Share Tech Mono,monospace", fontSize:8, color:"rgba(200,195,185,0.4)", letterSpacing:"0.22em", marginBottom:8 }}>
+                  <div style={{ fontFamily: mono, fontSize: 9, color: "rgba(200,195,185,0.4)", letterSpacing: "0.18em", marginBottom: 8 }}>
                     UI SIZE · {Math.round(uiScale * 100)}%
                   </div>
-                  <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                    <span style={{ fontFamily:"Share Tech Mono,monospace", fontSize:8, color:"rgba(200,195,185,0.35)" }}>⊟</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontFamily: mono, fontSize: 9, color: "rgba(200,195,185,0.35)" }}>⊟</span>
                     <input type="range" min="0.75" max="1.35" step="0.05" value={uiScale}
-                      onChange={e => setUiScale(Number(e.target.value))}
-                      className="sg-volume"
-                      style={{ width:120, background:`linear-gradient(to right, rgba(200,195,185,0.6) ${((uiScale-0.75)/0.6)*100}%, rgba(200,195,185,0.12) ${((uiScale-0.75)/0.6)*100}%)` }}
+                      onChange={e => setUiScale(Number(e.target.value))} className="sg-volume"
+                      style={{ width: 120, background: `linear-gradient(to right, rgba(200,195,185,0.6) ${((uiScale-0.75)/0.6)*100}%, rgba(200,195,185,0.12) ${((uiScale-0.75)/0.6)*100}%)` }}
                     />
-                    <span style={{ fontFamily:"Share Tech Mono,monospace", fontSize:12, color:"rgba(200,195,185,0.5)" }}>⊞</span>
+                    <span style={{ fontFamily: mono, fontSize: 13, color: "rgba(200,195,185,0.5)" }}>⊞</span>
                   </div>
                 </div>
               )}
-
+              <div style={{ marginLeft: "auto" }}>
+                <button onClick={onResetProgress} style={{
+                  padding: "6px 14px", background: "transparent",
+                  border: "1px solid rgba(180,80,80,0.3)", color: "rgba(220,140,140,0.65)",
+                  fontFamily: mono, fontSize: 9, letterSpacing: "0.2em",
+                  cursor: "pointer", borderRadius: 3, transition: "all 0.15s",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background="rgba(180,80,80,0.1)"; e.currentTarget.style.color="rgba(230,160,160,0.9)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.color="rgba(220,140,140,0.65)"; }}>
+                  ↺ NEW GAME+
+                </button>
+              </div>
             </div>
           </div>
         )}
