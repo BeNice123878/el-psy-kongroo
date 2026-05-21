@@ -873,44 +873,19 @@ function ChapterCard({ chapter, unlocked, done, progress, of, blockedReason, onP
       </div>
 
       {/* content */}
-      <div style={{ flex: 1, padding: "14px 18px", display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-          <div style={{ fontFamily: '"IM Fell English",serif', fontSize: 19, color: unlocked ? "#f0d890" : "rgba(200,180,130,0.4)", lineHeight: 1.1 }}>{chapter.title}</div>
-          <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 8, color: "rgba(200,146,10,0.45)", letterSpacing: "0.18em" }}>{chapter.subtitle}</div>
+      <div style={{ flex: 1, padding: "16px 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 12 }}>
+        <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 20, color: unlocked ? "#f0d890" : "rgba(200,180,130,0.35)", letterSpacing: "0.04em", lineHeight: 1.1 }}>
+          {chapter.title}
         </div>
-        <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 9, color: "rgba(200,146,10,0.6)", letterSpacing: "0.12em", marginBottom: 8 }}>{chapter.setting}</div>
-        <div style={{ fontFamily: '"IM Fell English",serif', fontStyle: "italic", fontSize: 13, color: "rgba(220,205,170,0.7)", lineHeight: 1.5, marginBottom: 12, flex: 1 }}>
-          {chapter.summary}
-        </div>
-
-        {/* gate progress */}
-        {!unlocked && blockedReason && (
-          <div style={{ marginBottom: 10 }}>
-            <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 8, color: "rgba(200,146,10,0.55)", letterSpacing: "0.2em", marginBottom: 4 }}>UNLOCK · {blockedReason}</div>
-            {chapter.unlock.type !== "free" && of > 0 && (
-              <div style={{ height: 3, background: "rgba(200,146,10,0.1)", position: "relative" }}>
-                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${(progress / of) * 100}%`, background: "linear-gradient(90deg, #c8920a, #f0d890)", boxShadow: "0 0 6px #c8920a" }}/>
-              </div>
-            )}
-            <div style={{ fontFamily: "Share Tech Mono,monospace", fontSize: 8, color: "rgba(200,180,130,0.4)", letterSpacing: "0.15em", marginTop: 3 }}>{progress} / {of}</div>
-          </div>
-        )}
-
-        <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={onPlay} disabled={!unlocked} style={{
-            padding: "7px 18px",
-            background: unlocked ? (done ? "rgba(122,202,168,0.12)" : "linear-gradient(180deg, #c8920a 0%, #8a6010 100%)") : "rgba(200,146,10,0.04)",
-            border: `1px solid ${unlocked ? (done ? "rgba(122,202,168,0.5)" : "rgba(200,146,10,0.6)") : "rgba(200,146,10,0.15)"}`,
-            color: unlocked ? (done ? "#7acaa8" : "#02060e") : "rgba(200,180,130,0.3)",
-            fontFamily: "Share Tech Mono,monospace", fontSize: 10, letterSpacing: "0.22em",
-            cursor: unlocked ? "pointer" : "not-allowed", fontWeight: "bold",
-          }}>{done ? "↻ REPLAY" : unlocked ? "▶ PLAY CHAPTER" : "🔒 LOCKED"}</button>
-          {chapter.achievement && done && (
-            <div style={{ padding: "7px 14px", background: "rgba(122,202,168,0.06)", border: "1px solid rgba(122,202,168,0.25)", fontFamily: "Share Tech Mono,monospace", fontSize: 9, color: "rgba(122,202,168,0.85)", letterSpacing: "0.15em" }}>
-              ★ {chapter.achievement.name}
-            </div>
-          )}
-        </div>
+        <button onClick={onPlay} disabled={!unlocked} style={{
+          alignSelf: "flex-start",
+          padding: "7px 20px",
+          background: unlocked ? (done ? "rgba(122,202,168,0.12)" : "linear-gradient(180deg, #c8920a 0%, #8a6010 100%)") : "rgba(200,146,10,0.04)",
+          border: `1px solid ${unlocked ? (done ? "rgba(122,202,168,0.5)" : "rgba(200,146,10,0.6)") : "rgba(200,146,10,0.15)"}`,
+          color: unlocked ? (done ? "#7acaa8" : "#02060e") : "rgba(200,180,130,0.25)",
+          fontFamily: "Share Tech Mono,monospace", fontSize: 10, letterSpacing: "0.22em",
+          cursor: unlocked ? "pointer" : "not-allowed", fontWeight: "bold",
+        }}>{done ? "↻ REPLAY" : unlocked ? "▶ PLAY" : "🔒 LOCKED"}</button>
       </div>
     </div>
   );
