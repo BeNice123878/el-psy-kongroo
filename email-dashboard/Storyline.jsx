@@ -331,6 +331,7 @@ function VNScene({ chapter, onClose, onComplete }) {
       position: "fixed", inset: 0, zIndex: 800,
       background: "#02060e",
       display: "flex", flexDirection: "column",
+      animation: "bodyFadeIn 0.18s ease both",
     }}>
       {/* Background image */}
       <div key={`bg-${flashKey}`} style={{
