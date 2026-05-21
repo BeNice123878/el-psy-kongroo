@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steins;Gate — Mail Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=IBM+Plex+Mono:wght@400;500;700&family=Caveat:wght@400;700&family=Patrick+Hand&family=Major+Mono+Display&family=Pacifico&family=Shadows+Into+Light&family=Kalam:wght@400;700&family=Indie+Flower&family=Special+Elite&family=Nunito:wght@400;600;700&family=Varela+Round&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #02060e; }
+  #root { width: 100%; height: 100%; }
+
+  @keyframes pulse {
+    0%,100% { opacity:0.5; } 50% { opacity:1; }
+  }
+  @keyframes scanReveal {
+    0%   { clip-path: inset(0 0 0 0);    opacity: 1; }
+    80%  { clip-path: inset(0 0 0 95%);  opacity: 0.6; }
+    100% { clip-path: inset(0 0 0 100%); opacity: 0; }
+  }
+  @keyframes glitchFlash {
+    0%   { transform: translateX(0);    filter: brightness(1);   }
+    15%  { transform: translateX(-4px); filter: brightness(2) hue-rotate(30deg); }
+    30%  { transform: translateX(3px);  filter: brightness(0.8); }
+    50%  { transform: translateX(-2px); filter: brightness(1.5); }
+    70%  { transform: translateX(1px);  filter: brightness(1);   }
+    100% { transform: translateX(0);    filter: brightness(1);   }
+  }
+  @keyframes emailContentIn {
+    0%   { opacity:0; transform: translateX(18px) scale(0.99); filter: blur(3px); }
+    40%  { opacity:0.6; filter: blur(1px); }
+    100% { opacity:1; transform: translateX(0) scale(1); filter: blur(0); }
+  }
+  @keyframes headerSlideIn {
+    0%   { opacity:0; transform: translateY(-8px); }
+    100% { opacity:1; transform: translateY(0); }
+  }
+  @keyframes bodyFadeIn {
+    0%   { opacity:0; }
+    40%  { opacity:0; }
+    100% { opacity:1; }
+  }
+  @keyframes scanLine {
+    0%   { top: 0;    opacity: 0.9; }
+    100% { top: 100%; opacity: 0;   }
+  }
+  @keyframes rotateSlow   { to { transform: rotate(360deg);  } }
+  @keyframes rotateReverse{ to { transform: rotate(-360deg); } }
+  @keyframes floatParticle {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.55; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-12vh) rotate(180deg); opacity: 0; }
+  }
+  @keyframes bootFadeOut {
+    from { opacity: 1; filter: blur(0) brightness(1); }
+    to   { opacity: 0; filter: blur(6px) brightness(0.6); }
+  }
+  @keyframes shiftPulse {
+    0%   { opacity: 0; }
+    20%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes shiftScan {
+    0%   { transform: translateY(-100%); opacity: 0; }
+    20%  { opacity: 1; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+  @keyframes shiftText {
+    0%   { opacity: 0; transform: translateY(20px) scale(0.94) skewX(-2deg); filter: blur(8px); }
+    25%  { opacity: 1; transform: translateY(0) scale(1) skewX(0); filter: blur(0); }
+    75%  { opacity: 1; transform: translateY(0) scale(1) skewX(0); filter: blur(0); }
+    100% { opacity: 0; transform: translateY(-12px) scale(1.04) skewX(2deg); filter: blur(4px); }
+  }
+  @keyframes screenSlideIn {
+    0%   { opacity: 0; transform: translateY(20px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes vnBgIn {
+    0%   { opacity: 0; transform: scale(1.04); filter: blur(8px); }
+    100% { opacity: 1; transform: scale(1);    filter: blur(0); }
+  }
+  @keyframes vnPortraitIn {
+    0%   { opacity: 0; transform: translateY(20px) scale(0.98); filter: brightness(0.5); }
+    100% { opacity: 1; transform: translateY(0)   scale(1);     filter: brightness(1); }
+  }
+  @keyframes chromaticGlitch {
+    0%, 100% { text-shadow: 0 0 0 #c8920a; }
+    25%      { text-shadow: -2px 0 #5a8acc, 2px 0 #cc4a4a; }
+    50%      { text-shadow: 1px 0 #cc4a4a, -1px 0 #5a8acc; }
+    75%      { text-shadow: 0 0 0 #c8920a; }
+  }
+
+  @keyframes shimmerSlide {
+    0%   { transform: translateX(-100%) skewX(-20deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateX(400%) skewX(-20deg); opacity: 0; }
+  }
+  @keyframes btnGlitch {
+    0%   { filter: brightness(1); }
+    20%  { filter: brightness(1.5) drop-shadow(-3px 0 rgba(255,40,100,0.9)) drop-shadow(3px 0 rgba(0,210,255,0.9)); }
+    40%  { filter: brightness(0.85) drop-shadow(2px 0 rgba(255,40,100,0.7)) drop-shadow(-2px 0 rgba(0,210,255,0.7)); }
+    65%  { filter: brightness(1.2) drop-shadow(-1px 0 rgba(255,100,50,0.6)) drop-shadow(1px 0 rgba(50,150,255,0.6)); }
+    80%  { filter: brightness(1); }
+    100% { filter: brightness(1); }
+  }
+  @keyframes scanNumbers {
+    0%   { opacity: 1; }
+    45%  { opacity: 0.4; }
+    55%  { opacity: 1; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes btnScanNumbers {
+    0%   { opacity: 0.35; }
+    30%  { opacity: 0.7; }
+    60%  { opacity: 0.25; }
+    100% { opacity: 0.35; }
+  }
+  @keyframes btnScanIntense {
+    0%   { opacity: 0.7; text-shadow: 0 0 4px rgba(200,146,10,0.5); }
+    15%  { opacity: 1; text-shadow: -2px 0 #ff3a6e, 2px 0 #3af0ff, 0 0 12px rgba(240,216,144,1); }
+    35%  { opacity: 0.5; text-shadow: 1px 0 #3af0ff, -1px 0 #ff3a6e; }
+    55%  { opacity: 1; text-shadow: 0 0 16px rgba(240,216,144,0.9), -3px 0 #ff3a6e, 3px 0 #3af0ff; }
+    75%  { opacity: 0.8; text-shadow: -1px 0 #ff3a6e, 1px 0 #3af0ff; }
+    100% { opacity: 0.7; text-shadow: 0 0 4px rgba(200,146,10,0.5); }
+  }
+  @keyframes transGlitchHard {
+    0%   { transform: translate(0) skewX(0); filter: none; }
+    10%  { transform: translate(-8px,2px) skewX(-4deg); filter: hue-rotate(90deg) brightness(2.5); }
+    20%  { transform: translate(5px,-3px) skewX(3deg); filter: hue-rotate(-60deg) brightness(0.5); }
+    30%  { transform: translate(0) skewX(0); filter: brightness(1.8); }
+    50%  { transform: translate(6px,1px) skewX(-2deg); filter: hue-rotate(180deg) saturate(3); }
+    60%  { transform: translate(-3px,-2px) skewX(1deg); filter: brightness(3); }
+    70%  { transform: translate(0) skewX(0); filter: none; }
+    85%  { transform: translate(2px,1px); filter: brightness(1.5) hue-rotate(-90deg); }
+    100% { transform: translate(0) skewX(0); filter: none; }
+  }
+  @keyframes transScanRush {
+    0%   { top: -5%; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: 105%; opacity: 0; }
+  }
+  @keyframes transChromaticPulse {
+    0%   { text-shadow: 0 0 0 transparent; }
+    20%  { text-shadow: -4px 0 #ff3a6e, 4px 0 #3af0ff, 0 0 30px rgba(255,255,255,0.5); }
+    40%  { text-shadow: 3px 0 #ff3a6e, -3px 0 #3af0ff; }
+    60%  { text-shadow: -2px 0 #3af0ff, 2px 0 #ff3a6e, 0 0 20px rgba(200,146,10,0.8); }
+    80%  { text-shadow: 1px 0 #ff3a6e, -1px 0 #3af0ff; }
+    100% { text-shadow: 0 0 40px rgba(240,216,144,0.9); }
+  }
+
+  @keyframes matrixFall {
+    0%   { transform: translateY(-105%); }
+    100% { transform: translateY(110vh); }
+  }
+
+  /* Two-keyframe zooms — interpolation handled fully by easing curve for smooth motion.
+     Opacity stays high until the very end (custom easing in animation declaration). */
+  @keyframes zoomMenuFast {
+    from { transform: scale(1)   translate3d(0,0,0); filter: blur(0); }
+    to   { transform: scale(4.6) translate3d(0,0,0); filter: blur(14px); }
+  }
+  @keyframes zoomMenuSlow {
+    from { transform: scale(1)   rotate(0deg)  translate3d(0,0,0); filter: blur(0); }
+    to   { transform: scale(5.8) rotate(14deg) translate3d(0,0,0); filter: blur(20px); }
+  }
+  /* Separate opacity fade with custom easing so it stays visible most of the journey */
+  @keyframes zoomMenuFadeOut {
+    0%   { opacity: 1; }
+    55%  { opacity: 0.95; }
+    85%  { opacity: 0.35; }
+    100% { opacity: 0; }
+  }
+  /* Subtler glitch — gentler color fringes, fewer frames, longer rest periods */
+  @keyframes matrixGlitch {
+    0%, 28%, 55%, 82%, 100% { filter: none; transform: translateX(0); }
+    32%  { filter: drop-shadow(-2px 0 rgba(255,58,110,0.55)) drop-shadow(2px 0 rgba(58,240,255,0.55)); transform: translateX(-2px); }
+    58%  { filter: brightness(1.35) drop-shadow(1px 0 rgba(255,58,110,0.45)); transform: translateX(2px); }
+    86%  { filter: drop-shadow(-1px 0 rgba(58,240,255,0.45)); transform: translateX(-1px); }
+  }
+  @keyframes zoomInGate {
+    0%   { transform: scale(0.35); opacity: 0; filter: blur(20px); }
+    14%  { opacity: 1; }
+    55%  { transform: scale(1.4); filter: blur(0); }
+    80%  { transform: scale(2.8); opacity: 0.85; filter: blur(4px); }
+    100% { transform: scale(5.5); opacity: 0; filter: blur(20px); }
+  }
+  @keyframes zoomLoadDeep {
+    0%   { transform: scale(0.25) rotate(-8deg); opacity: 0; filter: blur(24px); }
+    8%   { opacity: 1; }
+    35%  { transform: scale(1) rotate(0deg); filter: blur(0); }
+    65%  { transform: scale(1.9) rotate(6deg); filter: blur(0); }
+    85%  { transform: scale(3.5) rotate(12deg); opacity: 0.7; filter: blur(8px); }
+    100% { transform: scale(7) rotate(20deg); opacity: 0; filter: blur(30px); }
+  }
+  @keyframes ringPulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(200,146,10,0.4), inset 0 0 30px rgba(200,146,10,0.2); }
+    50%      { box-shadow: 0 0 60px rgba(240,216,144,0.8), inset 0 0 50px rgba(240,216,144,0.35); }
+  }
+  @keyframes matrixIntroFade {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes chSlideUp {
+    0%   { opacity: 0; transform: translateY(28px); filter: blur(5px); }
+    100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+  }
+  @keyframes bgDim {
+    0%   { opacity: 0; }
+    18%  { opacity: 1; }
+    55%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes chBarFill {
+    0%   { width: 0%; }
+    100% { width: 100%; }
+  }
+  @keyframes chGlowPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.04); }
+  }
+
+  /* scrollbar — global (thin) */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: rgba(200,146,10,0.04); }
+  ::-webkit-scrollbar-thumb { background: rgba(200,146,10,0.25); border-radius: 2px; }
+
+  /* email list — more visible scrollbar */
+  .sg-email-list-scroll::-webkit-scrollbar { width: 6px; }
+  .sg-email-list-scroll::-webkit-scrollbar-track { background: rgba(200,146,10,0.07); border-radius: 3px; }
+  .sg-email-list-scroll::-webkit-scrollbar-thumb { background: rgba(200,146,10,0.5); border-radius: 3px; border: 1px solid rgba(200,146,10,0.15); }
+  .sg-email-list-scroll::-webkit-scrollbar-thumb:hover { background: rgba(240,200,80,0.75); }
+
+  input, textarea, button { font-family: inherit; }
+  input::placeholder, textarea::placeholder { color: rgba(200,180,130,0.25); }
+
+  /* Volume slider */
+  .sg-volume { -webkit-appearance:none; appearance:none; height:3px; border-radius:2px; outline:none; cursor:pointer; border:none; }
+  .sg-volume::-webkit-slider-thumb { -webkit-appearance:none; width:10px; height:10px; border-radius:50%; background:rgba(200,146,10,0.9); cursor:pointer; }
+  .sg-volume::-moz-range-thumb { width:10px; height:10px; border-radius:50%; background:rgba(200,146,10,0.9); border:none; cursor:pointer; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="Widgets.jsx"></script>
+<script type="text/babel" src="Storyline.jsx"></script>
+<script type="text/babel" src="EmailApp.jsx"></script>
+<script type="text/babel">
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    React.createElement(window.SteinsGateMailApp)
+  );
+</script>
+<script>
+  // ── YouTube player — global, created as soon as API is ready ──────────────
+  window._ytPlayer = null;
+  window._ytAPIReady = false;
+  window._ytVolume = 15;
+  window._sgMusicAllowed = false;
+
+  function _sgStartMusic() {
+    window._sgMusicAllowed = true;
+    if (window._ytPlayer) {
+      try {
+        window._ytPlayer.setVolume(window._ytVolume);
+        try {
+          var playlist = window._ytPlayer.getPlaylist();
+          if (playlist && playlist.length > 0) {
+            window._ytPlayer.playVideoAt(Math.floor(Math.random() * playlist.length));
+          } else {
+            window._ytPlayer.setShuffle(true);
+            window._ytPlayer.playVideo();
+          }
+        } catch(e) { window._ytPlayer.playVideo(); }
+      } catch(e) {}
+    }
+  }
+  window.addEventListener('sg-start-music', _sgStartMusic);
+
+  function _sgBuildPlayer() {
+    if (window._ytPlayer || !window.YT || !window.YT.Player) return;
+    var wrap = document.getElementById('yt-global-player');
+    if (!wrap) return;
+    window._ytPlayer = new YT.Player('yt-global-player', {
+      height: 1, width: 1,
+      playerVars: {
+        listType: 'playlist',
+        list: 'PL2HiTzV_9LRcss7XYd6m_BmXIwlw4Byxt',
+        autoplay: 0,
+        controls: 0, loop: 1, modestbranding: 1, rel: 0,
+        origin: window.location.origin,
+      },
+      events: {
+        onReady: function(e) {
+          e.target.setVolume(window._ytVolume);
+          try { e.target.setShuffle(true); } catch(err) {}
+          if (window._sgMusicAllowed) e.target.playVideo();
+          window.dispatchEvent(new Event('yt-player-ready'));
+        },
+        onStateChange: function(e) {
+          window._ytPlayerState = e.data;
+          window.dispatchEvent(new CustomEvent('yt-state-change', { detail: e.data }));
+        },
+      },
+    });
+  }
+
+  window.onYouTubeIframeAPIReady = function() {
+    window._ytAPIReady = true;
+    _sgBuildPlayer();
+    window.dispatchEvent(new Event('yt-api-ready'));
+  };
+
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+</script>
+<!-- Global hidden YouTube player element -->
+<div id="yt-global-player" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"></div>
+<!-- SoundCloud Widget API -->
+<script src="https://w.soundcloud.com/player/api.js"></script>
+<!-- Hidden SoundCloud player iframe -->
+<iframe id="sc-global-player" allow="autoplay"
+  style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"
+  src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/playboicarti-790679962/bando-3&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false">
+</iframe>
+<script>
+  window._scReady = false;
+  window._scPlaying = false;
+  window._scTrackIndex = 0;
+  window._scCurrentTime = 0;
+  window._scDuration = 0;
+
+  function _sgInitSC() {
+    if (!window.SC || !document.getElementById('sc-global-player')) return;
+    var widget = SC.Widget(document.getElementById('sc-global-player'));
+    window._scWidget = widget;
+    widget.bind(SC.Widget.Events.READY, function() {
+      window._scReady = true;
+      widget.getDuration(function(d) { window._scDuration = d / 1000; });
+      window.dispatchEvent(new Event('sc-ready'));
+    });
+    widget.bind(SC.Widget.Events.PLAY, function() {
+      window._scPlaying = true;
+      window.dispatchEvent(new Event('sc-state-change'));
+    });
+    widget.bind(SC.Widget.Events.PAUSE, function() {
+      window._scPlaying = false;
+      window.dispatchEvent(new Event('sc-state-change'));
+    });
+    widget.bind(SC.Widget.Events.PLAY_PROGRESS, function(e) {
+      window._scCurrentTime = e.currentPosition / 1000;
+      window._scDuration = e.relativePosition > 0 ? (e.currentPosition / 1000) / e.relativePosition : window._scDuration;
+    });
+    widget.bind(SC.Widget.Events.FINISH, function() {
+      window._scPlaying = false;
+      window.dispatchEvent(new Event('sc-track-finished'));
+    });
+  }
+
+  if (document.readyState === 'complete') { _sgInitSC(); }
+  else { window.addEventListener('load', _sgInitSC); }
+</script>
+</body>
+</html>
+
