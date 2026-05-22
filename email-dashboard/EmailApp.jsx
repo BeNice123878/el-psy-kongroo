@@ -1346,7 +1346,7 @@ function labelStyle(label) {
 const CHAR_META = {
   "nyan@future-gadget-lab.jp":            { name: "Faris NyanNyan",  accent: "#d878a8" },
   "makise.kurisu@viktor-kondria.org":     { name: "Makise Kurisu",   accent: "#e08868" },
-  "barrel-titor@2ch.net":                 { name: "Daru",            accent: "#7a96da", font: "'Caveat', cursive", fontSize: { name: 15, subject: 13, preview: 12 } },
+  "barrel-titor@2ch.net":                 { name: "Daru",            accent: "#7a96da" },
   "mayushii@tutturu.jp":                  { name: "Shiina Mayuri",   accent: "#9ad8d2" },
   "m.kiryuu@r025.com":                    { name: "Kiryuu Moeka",    accent: "#b486dc" },
   "suzuha.amane@ibm5100.net":             { name: "Suzuha Amane",    accent: "#d8c46a" },
@@ -2019,8 +2019,8 @@ const CHARACTER_FONTS = {
     weight: 500, sizeMul: 1.0, letterSpacing: '0.01em', // precise, scientific
   },
   "barrel-titor@2ch.net": {
-    family: '"Kalam", "Caveat", cursive',
-    weight: 400, sizeMul: 1.25, letterSpacing: '0.01em', // readable hacker handwriting
+    family: '"Share Tech Mono", monospace',
+    weight: 400, sizeMul: 1.0, letterSpacing: '0.04em', // clean, simple monospace
   },
   "mayushii@tutturu.jp": {
     family: '"Patrick Hand", "Caveat", cursive',
