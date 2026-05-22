@@ -1346,7 +1346,7 @@ function labelStyle(label) {
 const CHAR_META = {
   "nyan@future-gadget-lab.jp":            { name: "Faris NyanNyan",  accent: "#d878a8" },
   "makise.kurisu@viktor-kondria.org":     { name: "Makise Kurisu",   accent: "#e08868" },
-  "barrel-titor@2ch.net":                 { name: "Daru",            accent: "#7a96da", font: "'Pacifico', cursive" },
+  "barrel-titor@2ch.net":                 { name: "Daru",            accent: "#7a96da", font: "'Special Elite', cursive" },
   "mayushii@tutturu.jp":                  { name: "Shiina Mayuri",   accent: "#9ad8d2" },
   "m.kiryuu@r025.com":                    { name: "Kiryuu Moeka",    accent: "#b486dc" },
   "suzuha.amane@ibm5100.net":             { name: "Suzuha Amane",    accent: "#d8c46a" },
