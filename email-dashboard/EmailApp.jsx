@@ -1346,7 +1346,7 @@ function labelStyle(label) {
 const CHAR_META = {
   "nyan@future-gadget-lab.jp":            { name: "Faris NyanNyan",  accent: "#d878a8" },
   "makise.kurisu@viktor-kondria.org":     { name: "Makise Kurisu",   accent: "#e08868" },
-  "barrel-titor@2ch.net":                 { name: "Daru",            accent: "#7a96da", font: "'Special Elite', cursive" },
+  "barrel-titor@2ch.net":                 { name: "Daru",            accent: "#7a96da", font: "'Caveat', cursive", fontSize: { name: 15, subject: 13, preview: 12 } },
   "mayushii@tutturu.jp":                  { name: "Shiina Mayuri",   accent: "#9ad8d2" },
   "m.kiryuu@r025.com":                    { name: "Kiryuu Moeka",    accent: "#b486dc" },
   "suzuha.amane@ibm5100.net":             { name: "Suzuha Amane",    accent: "#d8c46a" },
@@ -1355,7 +1355,7 @@ const CHAR_META = {
 function MinimalistEmailBanner({ email, selected, onClick }) {
   const [hover, setHover] = useState(false);
   const timeStr = new Date(email.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  const { name, accent, font = '"IBM Plex Mono", monospace' } = CHAR_META[email.from] || { name: email.from, accent: "#888888" };
+  const { name, accent, font = '"IBM Plex Mono", monospace', fontSize: fs = {} } = CHAR_META[email.from] || { name: email.from, accent: "#888888" };
 
   return (
     <div
@@ -1390,7 +1390,7 @@ function MinimalistEmailBanner({ email, selected, onClick }) {
       <div style={{ paddingRight: 72 }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
           <span style={{
-            fontFamily: font, fontSize: 12, fontWeight: 600,
+            fontFamily: font, fontSize: fs.name || 12, fontWeight: 600,
             color: "#ffffff",
             whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
           }}>{name}</span>
@@ -1400,12 +1400,12 @@ function MinimalistEmailBanner({ email, selected, onClick }) {
           }}>{timeStr}</span>
         </div>
         <div style={{
-          fontFamily: font, fontSize: 11,
+          fontFamily: font, fontSize: fs.subject || 11,
           color: "#ffffff",
           marginBottom: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
         }}>{email.subject}</div>
         <div style={{
-          fontFamily: font, fontSize: 10,
+          fontFamily: font, fontSize: fs.preview || 10,
           color: "#ffffff", lineHeight: 1.4,
           display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
         }}>{email.preview}</div>
